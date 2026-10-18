@@ -38,6 +38,10 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      # Если хотя бы один тест упал, задание завершается ошибкой
-      - name: Run tests
-        run: python -m pytest -v
+      # Запускаем pytest с измерением покрытия строк и ветвей
+      - name: Run tests with coverage
+        run: python -m coverage run --branch --source=src -m pytest -v
+
+      # Завершаем CI ошибкой, если покрытие ниже 80%
+      - name: Check coverage
+        run: python -m coverage report -m --fail-under=80
