@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Java
+target/
+build/
+.gradle/
+*.class
+
+# JavaScript
+node_modules/
+coverage/
+
+# C++
+cmake-build-*/
+*.exe
+*.o
+*.obj
+
+# IDE
+.idea/

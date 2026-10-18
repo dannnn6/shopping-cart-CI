@@ -1,0 +1,43 @@
+name: CI
+
+# Проверяем изменения в main и Pull Request, направленные в main
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Для скачивания исходников достаточно прав на чтение
+permissions:
+  contents: read
+
+jobs:
+  python-tests:
+    name: Python tests
+    runs-on: ubuntu-latest
+
+    # Все команды run выполняются внутри Python-проекта
+    defaults:
+      run:
+        working-directory: python
+
+    steps:
+      # Скачиваем исходники репозитория на машину GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # Устанавливаем Python и включаем кеш скачанных пакетов pip
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: python/requirements.txt
+
+      # Кеш ускоряет скачивание, но установку всё равно выполняем
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      # Если хотя бы один тест упал, задание завершается ошибкой
+      - name: Run tests
+        run: python -m pytest -v
