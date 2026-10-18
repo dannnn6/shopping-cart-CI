@@ -35,8 +35,15 @@ class ShoppingCart:
         else:
             self.items[product_id] -= quantity
 
-    def total(self):
-        return sum(
+    def total(self, promocode: str | None = None):
+        amount = sum(
             self.products[product_id].price * quantity
             for product_id, quantity in self.items.items()
         )
+
+        if promocode is None:
+            return amount
+        if promocode != "VYATSU10":
+            raise ValueError("Неизвестный промокод")
+
+        return (amount * 90 + 50) // 100 # +50 чтобы тесты проходили на маленьких числах, где целочисл дел дает ошибку
