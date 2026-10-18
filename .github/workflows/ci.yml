@@ -45,3 +45,30 @@ jobs:
       # Завершаем CI ошибкой, если покрытие ниже 80%
       - name: Check coverage
         run: python -m coverage report -m --fail-under=80
+
+  java-tests:
+    name: Java tests
+    runs-on: ubuntu-latest
+
+    # Команды Maven запускаются из папки Java-проекта
+    defaults:
+      run:
+        working-directory: java
+
+    steps:
+      # Скачиваем исходники
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # Устанавливаем JDK и кешируем зависимости Maven
+      - name: Set up Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+          cache-dependency-path: java/pom.xml
+
+      # Компиляция и тесты
+      - name: Build and check coverage
+        run: mvn --batch-mode --no-transfer-progress clean verify
