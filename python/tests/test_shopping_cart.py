@@ -126,3 +126,26 @@ def test_total_after_remove(cart):
     cart.remove("p1", 1)
 
     assert cart.total() == 25000
+
+def test_total_with_promo(cart):
+    cart.add("p1", 2)
+    cart.add("p2", 3)
+
+    assert cart.total("VYATSU10") == 31500
+    assert cart.total() == 35000
+    assert cart.items == {"p1": 2, "p2": 3}
+
+def test_promo_for_empty_cart(cart):
+    assert cart.total("VYATSU10") == 0
+
+@pytest.mark.parametrize("code", ["WRONG", "", "skidka10"])
+def test_unknown_promo(cart, code):
+    with pytest.raises(ValueError, match="Неизвестный промокод"):
+        cart.total(code)
+
+@pytest.mark.parametrize("price, expected", [(15, 14), (14, 13)])
+def test_promo_rounding(price, expected):
+    cart = ShoppingCart({"p1": Product("p1", "Товар", price, 1)})
+    cart.add("p1", 1)
+
+    assert cart.total("VYATSU10") == expected
