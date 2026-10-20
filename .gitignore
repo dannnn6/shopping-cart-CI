@@ -14,10 +14,6 @@ build/
 .gradle/
 *.class
 
-# JavaScript
-node_modules/
-coverage/
-
 # C++
 cmake-build-*/
 *.exe
@@ -29,5 +25,4 @@ cmake-build-*/
 
 # JavaScript
 node_modules/
-coverage/
 .vitest/
