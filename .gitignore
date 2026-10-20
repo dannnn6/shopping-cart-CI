@@ -9,7 +9,6 @@ htmlcov/
 coverage.xml
 
 # Java
-target/
 build/
 .gradle/
 *.class
