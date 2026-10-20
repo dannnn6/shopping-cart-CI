@@ -1,0 +1,15 @@
+{
+  "name": "shopping-cart-js",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "vitest": "4.0.18",
+    "@vitest/coverage-v8": "4.0.18"
+  }
+}
