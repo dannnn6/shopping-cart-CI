@@ -24,3 +24,9 @@ cmake-build-*/
 # JavaScript
 node_modules/
 .vitest/
+
+# Сгенерированные отчёты и результаты сборки
+python/htmlcov/
+java/target/
+javascript/coverage/
+java/maven-debug.log

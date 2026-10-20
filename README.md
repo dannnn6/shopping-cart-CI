@@ -6,9 +6,8 @@
 
 Промокод: ```VYATSU10``` (скидку 10%)
 
-[Красивая статистика покрытия для Python](python/htmlcov/index.html)
+[Покрытие Python](https://dannnn6.github.io/shopping-cart-CI/python/)
 
-[Красивая статистика покрытия для Java](java/target/site/jacoco/index.html)
+[Покрытие Java](https://dannnn6.github.io/shopping-cart-CI/java/)
 
-[Красивая статистика покрытия для JavaScript](javascript/coverage/index.html)
-
+[Покрытие JavaScript](https://dannnn6.github.io/shopping-cart-CI/javascript/)

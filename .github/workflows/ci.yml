@@ -46,6 +46,16 @@ jobs:
       - name: Check coverage
         run: python -m coverage report -m --fail-under=80
 
+      - name: Create HTML coverage report
+        run: python -m coverage html -d htmlcov
+
+      - name: Upload Python coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-python
+          path: python/htmlcov/
+          if-no-files-found: error
+
   java-tests:
     name: Java tests
     runs-on: ubuntu-latest
@@ -72,6 +82,13 @@ jobs:
       # Компиляция и тесты
       - name: Build and check coverage
         run: mvn --batch-mode --no-transfer-progress clean verify
+
+      - name: Upload Java coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-java
+          path: java/target/site/jacoco/
+          if-no-files-found: error
 
   javascript-tests:
     name: JavaScript tests
@@ -101,3 +118,86 @@ jobs:
       # Проверяем тесты и пороги покрытия
       - name: Run tests with coverage
         run: npm run coverage
+
+      - name: Upload JavaScript coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-javascript
+          path: javascript/coverage/
+          if-no-files-found: error
+
+
+  publish-coverage:
+    name: Publish coverage reports
+    needs: [ python-tests, java-tests, javascript-tests ]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: coverage-pages
+      cancel-in-progress: false
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download Python coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-python
+          path: public/python
+
+      - name: Download Java coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-java
+          path: public/java
+
+      - name: Download JavaScript coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-javascript
+          path: public/javascript
+
+      - name: Create reports homepage
+        run: |
+          test -f public/python/index.html
+          test -f public/java/index.html
+          test -f public/javascript/index.html
+
+          cat > public/index.html <<'HTML'
+          <!doctype html>
+          <html lang="ru">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Покрытие тестами</title>
+          </head>
+          <body>
+            <h1>Покрытие тестами</h1>
+            <ul>
+              <li><a href="./python/">Python</a></li>
+              <li><a href="./java/">Java</a></li>
+              <li><a href="./javascript/">JavaScript</a></li>
+            </ul>
+          </body>
+          </html>
+          HTML
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: lab3.ShoppingCartTest
--------------------------------------------------------------------------------
-Tests run: 25, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.143 s -- in lab3.ShoppingCartTest
