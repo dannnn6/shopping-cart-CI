@@ -2,6 +2,11 @@
 
 Модульные тесты. CI. GitHub Actions
 
-Добавлен функционал промокода ```VYATSU10``` на скидку 10%
+Реализации: Python, Java, JavaScript
 
-Добавлена Java реализация
+Промокод: ```VYATSU10``` (скидку 10%)
+
+[Красивая статистика покрытия для Java](java/coverage/index.html)
+
+[Красивая статистика покрытия для JavaScript](javascript/coverage/index.html)
+
