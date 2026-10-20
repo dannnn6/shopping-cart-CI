@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, test } from 'vitest';
 import { Product } from '../src/Product.js';
 import { ShoppingCart } from '../src/ShoppingCart.js';
+import {defaultExclude} from "vitest/config";
 
 describe('ShoppingCart', () => {
   let cart;
@@ -61,4 +62,27 @@ describe('ShoppingCart', () => {
     cart.remove('p1', 1);
     expect(cart.getItems().get('p1')).toBe(undefined);
   });
+
+  test('полностью удаляем товар, который есть (без указания кол-ва)', () => {
+    cart.add('p1', 1)
+    cart.remove('p1')
+    expect(cart.getItems().get('p1')).toBe(undefined);
+  });
+
+  test('удаляем меньше, чем есть', () => {
+    cart.add('p1', 2);
+    cart.remove('p1', 1);
+    expect(cart.getItems().get('p1')).toBe(1);
+  });
+
+  test('проверяем промокод', () => {
+    cart.add('p1', 1);
+    expect(cart.total('VYATSU10')).toBe(9000);
+  });
+
+  test('проверяем неправильный промокод', () => {
+    cart.add('p1', 1);
+    expect(() => cart.total('BAD_PROMOCODE')).toThrow('Неизвестный промокод')
+  });
+
 });
