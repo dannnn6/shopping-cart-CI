@@ -20,4 +20,12 @@ describe('ShoppingCart', () => {
     expect(cart.total()).toBe(0);
   });
 
+  test('добавили 1 товар', () => {
+    cart.add('p1', 5);
+    expect(cart.total()).toBe(50000);
+    expect(cart.getItems().get('p1')).toBe(5);
+  });
+
+
+
 });

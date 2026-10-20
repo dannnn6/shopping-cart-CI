@@ -66,7 +66,7 @@ export class ShoppingCart {
       return amount;
     }
 
-    if (promoCode !== 'SALE10') {
+    if (promoCode !== 'VYATSU10') {
       throw new Error('Неизвестный промокод');
     }
 
