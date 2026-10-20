@@ -72,3 +72,32 @@ jobs:
       # Компиляция и тесты
       - name: Build and check coverage
         run: mvn --batch-mode --no-transfer-progress clean verify
+
+  javascript-tests:
+    name: JavaScript tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: javascript
+
+    steps:
+      # Скачиваем исходники
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # Устанавливаем Node.js и включаем кеш npm
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: javascript/package-lock.json
+
+      # Устанавливаем зависимости по сохранённому lock-файлу
+      - name: Install dependencies
+        run: npm ci
+
+      # Проверяем тесты и пороги покрытия
+      - name: Run tests with coverage
+        run: npm run coverage
